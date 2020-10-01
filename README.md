@@ -1,0 +1,2 @@
+# relacoes-binarias
+TP MD
