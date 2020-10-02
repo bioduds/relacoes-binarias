@@ -17,6 +17,7 @@ int is_simetrica( int** matriz, int size );
 int is_irreflexiva( int** matriz, int size );
 int is_reflexiva( int** matriz, int size );
 
+
 int main( int argc, char* argv[] ) {
 
   int n;
@@ -39,7 +40,7 @@ int main( int argc, char* argv[] ) {
     matriz[m] = ( int* ) malloc( sizeof( int ) * (n+1) );
   }
 
-  // preencher base
+  // preencher base usando posições 0,0 para delimitar submatriz com ref dos nos
   for( int z=0; z<=n; z++) {
     for( int x=0; x<=n; x++) {
       if( z == 0 && x == 0) {
@@ -57,7 +58,7 @@ int main( int argc, char* argv[] ) {
   
   int a, b;
   int rc;
-  while ( (rc = scanf( "%d", &a ) ) == 1 ) {
+  while ( ( rc = scanf( "%d", &a ) ) == 1 ) {
     scanf( "%d", &b );
     int lb = 0;
     int cb = 0;
@@ -71,13 +72,13 @@ int main( int argc, char* argv[] ) {
     }
   }
 
-  // vendo a matriz - codigo de teste
-  // printf( "Mostrando a matriz\n");
-  // for( int v=0; v<=n; v++) {
+  // vendo a matriz - codigo de teste - "descomente" para verificar
+  // printf( "Mostrando a matriz\n" );
+  // for( int v=0; v<=n; v++ ) {
   //   for( int w=0; w<=n; w++) {
   //     printf( "%d ", matriz[v][w] );
   //   }
-  //   printf( "\n");
+  //   printf( "\n" );
   // }
 
   int reflexiva = is_reflexiva( matriz, n );
@@ -86,27 +87,27 @@ int main( int argc, char* argv[] ) {
   int antisimetrica = is_antisimetrica( matriz, n );
   int assimetrica = is_assimetrica( matriz, n );
   int transitiva = is_transitiva( matriz, n );
-  printf( "Relacao de equivalencia: %s \n", ( reflexiva && simetrica && transitiva ) ? "V" : "F" );
-  printf( "Relacao de ordem parcial: %s \n", ( reflexiva && transitiva && !antisimetrica ) ? "V" : "F" );
+  printf( "Relação de equivalência: %s \n", ( reflexiva && simetrica && transitiva ) ? "V" : "F" );
+  printf( "Relação de ordem parcial: %s \n", ( reflexiva && transitiva && !antisimetrica ) ? "V" : "F" );
   relacao_de_fecho( matriz, n );
 
   // liberar memoria da matriz
-  free (matriz);
+  free( matriz );
 
   return 0;
 
 }
 
 
-/*¨**********************
-Implementacoes de funcoes
+/************************
+Implementações de funções
 ________________________*/
 
 
 /************************/
 /*** RELACAO DE FECHO ***/
 void relacao_de_fecho( int** matriz, int size ) {
-  printf( "Fecho transitivo da relacao: " );
+  printf( "Fecho transitivo da relação: " );
   for( int i=1; i<=size; i++ ) {
     for( int j=1; j<=size; j++ ) {
       if( matriz[j][i] ) {
@@ -132,7 +133,6 @@ int is_transitiva( int** matriz, int size ) {
   int is_it = 1;
   for( int i=1; i<=size; i++ ) {
     for( int j=1; j<=size; j++ ) {
-      //  printf(" Oiando [%d,%d]: %d ", i, j, matriz[i][j] );
       if( matriz[i][j] && i != j ) {
         for( int k=1; k<=size; k++ ) {
           if( matriz[j][k] && !matriz[i][k] ) {
@@ -146,7 +146,6 @@ int is_transitiva( int** matriz, int size ) {
   if( is_it == 0 ) {
     for( int i = 1; i<=size; i++ ) {
       for( int j = 1; j<=size; j++ ) {
-        //  printf(" Oiando [%d,%d]: %d ", i, j, matriz[i][j] );
         if( matriz[i][j] && i != j ) {
           for( int k=1; k<=size; k++ ) {
             if( matriz[j][k] && !matriz[i][k] ) {
@@ -169,13 +168,12 @@ int is_assimetrica( int** matriz, int size ) {
   int is_it = 1;
   for( int i = 1; i<=size; i++ ) {
     for( int j = 1; j<=size; j++ ) {
-      //  printf(" Oiando [%d,%d]: %d ", i, j, matriz[i][j] );
       if( matriz[i][j] && matriz[j][i] ) {
         is_it = 0;
       }
     }
   }
-  printf( "Assimetrica: %s \n", ( is_it == 1 ) ? "V" : "F" );
+  printf( "Assimétrica: %s \n", ( is_it == 1 ) ? "V" : "F" );
   return is_it;
 }
 /*** ASSIMÉTRICA ***/
@@ -187,17 +185,15 @@ int is_antisimetrica( int** matriz, int size ) {
   int is_it = 0;
   for( int i = 1; i<=size; i++ ) {
     for( int j = 1; j<=size; j++ ) {
-      //  printf(" Oiando [%d,%d]: %d ", i, j, matriz[i][j] );
       if( ( matriz[i][j] && matriz[j][i] ) && i != j ) {
         is_it = 1;
       }
     }
   }
-  printf( "Anti-simetrica: %s \n", ( is_it == 1 ) ? "F" : "V" );
+  printf( "Anti-simétrica: %s \n", ( is_it == 1 ) ? "F" : "V" );
   if( is_it == 1 ) {
     for( int i = 1; i<=size; i++ ) {
       for( int j = 1; j<=size; j++ ) {
-        //  printf(" Oiando [%d,%d]: %d ", i, j, matriz[i][j] );
         if( i<j ) {
           if( ( matriz[i][j] && matriz[j][i] ) && i != j ) {
               printf( "(%d,%d); ", matriz[i][0], matriz[0][j] );
@@ -213,7 +209,6 @@ int is_antisimetrica( int** matriz, int size ) {
 /*** ANTI-SIMÉTRICA ***/
 /**********************/
 
-
 /*****************/
 /*** SIMÉTRICA ***/
 int is_simetrica( int** matriz, int size ) {
@@ -225,7 +220,7 @@ int is_simetrica( int** matriz, int size ) {
       }
     }
   }
-  printf( "Simetrica: %s \n", ( is_it == 1 ) ? "V" : "F" );
+  printf( "Simétrica: %s \n", ( is_it == 1 ) ? "V" : "F" );
   if( is_it == 0 ) {
     for( int i=1; i<=size; i++ ) {
       for( int j=1; j<=size; j++ ) {
@@ -240,7 +235,6 @@ int is_simetrica( int** matriz, int size ) {
 }
 /*** SIMÉTRICA ***/
 /*****************/
-
 
 /*******************/
 /*** IRREFLEXIVA ***/
@@ -260,7 +254,6 @@ int is_irreflexiva( int** matriz, int size ) {
   if( is_it == 1 ) {
     for( int i = 1; i<=size; i++ ) {
       for( int j = 1; j<=size; j++ ) {
-        //  printf(" Oiando [%d,%d]: %d ", i, j, matriz[i][j] );
         if( i == j ) {
           if( matriz[i][j] == 1 ) {
             printf( "(%d,%d); ", matriz[i][0], matriz[0][j] );
@@ -275,14 +268,12 @@ int is_irreflexiva( int** matriz, int size ) {
 /*******************/
 /*** IRREFLEXIVA ***/
 
-
 /*****************/
 /*** REFLEXIVA ***/
 int is_reflexiva( int** matriz, int size ) {
   int is_it = 1;
   for( int i = 1; i<=size; i++ ) {
     for( int j = 1; j<=size; j++ ) {
-      //  printf(" Oiando [%d,%d]: %d ", i, j, matriz[i][j] );
        if( i == j ) {
          if( matriz[i][j] == 0 ) {
            is_it = 0;
@@ -294,7 +285,6 @@ int is_reflexiva( int** matriz, int size ) {
   if( is_it == 0 ) {
     for( int i = 1; i<=size; i++ ) {
       for( int j = 1; j<=size; j++ ) {
-        //  printf(" Oiando [%d,%d]: %d ", i, j, matriz[i][j] );
         if( i == j ) {
           if( matriz[i][j] == 0 ) {
             printf( "(%d,%d); ", matriz[i][0], matriz[0][j] );
@@ -308,5 +298,4 @@ int is_reflexiva( int** matriz, int size ) {
 }
 /*** REFLEXIVA ***/
 /*****************/
-
 
