@@ -1,13 +1,12 @@
-/**TP*MD*TP*MD*TP*MD*TP*MD*TP*MD*TP*MD**/
-/** Author: Eduardo Capanema ***********/
-/** Email: eduardocapanema@ufmg.br *****/
-/** Mat: 2020041515 ********************/
+/** Author: Eduardo Capanema ********/
+/** Email: eduardocapanema@ufmg.br **/
+/** Mat: 2020041515 *****************/
 
 #include <stdlib.h>
 #include <stdio.h>
 
 // consts e globais
-#define MAX_VAL 5000
+#define MAX_VAL 50
 
 // cabeçalhos de funções
 void relacao_de_fecho( int** matriz, int size );
@@ -112,7 +111,7 @@ void relacao_de_fecho( int** matriz, int size ) {
     for( int j=1; j<=size; j++ ) {
       if( matriz[j][i] ) {
         if( i>=j ) {
-          for( int k=1; k<=size; k++ ) {
+          for( int k=1; k<=size; k++ ) { // OBS: para nossa análise de complexidade assintótica, este é nosso limite superior - O(n²)
             if( matriz[i][k] ) {
               printf( "(%d,%d); ", matriz[i][0], matriz[0][k] );
             }
