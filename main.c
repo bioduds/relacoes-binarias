@@ -111,7 +111,7 @@ void relacao_de_fecho( int** matriz, int size ) {
     for( int j=1; j<=size; j++ ) {
       if( matriz[j][i] ) {
         if( i>=j ) {
-          for( int k=1; k<=size; k++ ) { // OBS: para nossa análise de complexidade assintótica, este é nosso limite superior - O(n²)
+          for( int k=1; k<=size; k++ ) { // OBS: para nossa análise de complexidade assintótica, este é nosso limite superior - O(n³)
             if( matriz[i][k] ) {
               printf( "(%d,%d); ", matriz[i][0], matriz[0][k] );
             }
