@@ -1,44 +1,37 @@
+/**TP*MD*TP*MD*TP*MD*TP*MD*TP*MD*TP*MD**/
+/** Author: Eduardo Capanema ***********/
+/** Email: eduardocapanema@ufmg.br *****/
+/** Mat: 2020041515 ********************/
+
 #include <stdlib.h>
 #include <stdio.h>
 
 // consts e globais
-#define MAX_VAL 51
+#define MAX_VAL 5000
 
 // cabeçalhos de funções
-void is_reflexiva( int** matriz, int size );
+void relacao_de_fecho( int** matriz, int size );
+int is_transitiva( int** matriz, int size );
+int is_assimetrica( int** matriz, int size );
+int is_antisimetrica( int** matriz, int size );
+int is_simetrica( int** matriz, int size );
+int is_irreflexiva( int** matriz, int size );
+int is_reflexiva( int** matriz, int size );
 
 int main( int argc, char* argv[] ) {
 
-  /* precisamos ler uma entrada
-6 3 4 5 6 7 8
-3 5
-5 7
-7 3
-5 3
-7 5
-3 7
-4 6
-6 8
-8 4
-6 4
-8 6
-4 8
-3 3
-4 4
-5 5
-6 6
-7 7
-8 8 
-  */
-
   int n;
   scanf( "%d", &n);
-  printf("n is %d \n", n);
+  // printf("n is %d \n", n);
+
+  if( n > MAX_VAL ) {
+    printf( "Numero de entradas maior que o limite especificado!" );
+    return 0;
+  }
 
   int f[n];
   for ( int k=0; k<n; k++ ) {
     scanf( "%d", &f[k] );
-    //printf( "PEGUEI %d \n", f[k] );
   }
 
   int** matriz;
@@ -67,78 +60,226 @@ int main( int argc, char* argv[] ) {
   int rc;
   while ( (rc = scanf( "%d", &a ) ) == 1 ) {
     scanf( "%d", &b );
-
     int lb = 0;
     int cb = 0;
-
     // percorrer linha 0 e coluna 0
     for( lb=0; lb<=n; ++lb ) {
       for( cb=0; cb<=n; ++cb ) {
-
         if( matriz[lb][0] == a && matriz[0][cb] == b ) {
           matriz[lb][cb] = 1;
         }
-
       }
     }
-
-    // joga na matriz
-    //matriz[c1]c2] = 1;
-    //printf( "pegando par %d %d \n", a, b );
   }
 
-  // vendo a matriz
-  printf( "Bora ver a matriz\n");
-  for( int v=0; v<=n; v++) {
-    for( int w=0; w<=n; w++) {
-      printf( "%d ", matriz[v][w] );
-    }
-    printf( "\n");
-  }
+  // vendo a matriz - codigo de teste
+  // printf( "Mostrando a matriz\n");
+  // for( int v=0; v<=n; v++) {
+  //   for( int w=0; w<=n; w++) {
+  //     printf( "%d ", matriz[v][w] );
+  //   }
+  //   printf( "\n");
+  // }
 
-  // teremos uma matriz
-
-  /*
-  int ** matriz;
-  matriz = (int **) malloc (sizeof(int *) * NUMERO_DE_LINHAS);
-
-  for( i=0; i<NUMERO_DE_LINHAS; i++ ) {
-    matriz[i] = (int *) malloc (sizeof(int) * NUMERO_DE_COLUNAS);
-  }  
-  */
-
-
-
-  /* precisamos fornecer uma saida
-
-Reflexiva: V
-Irreflexiva: F
-(3,3); (4,4); (5,5); (6,6); (7,7); (8,8);
-Simétrica: V
-Anti-simétrica: F
-(3,5); (5,3); (3,7); (7,3); (4,6); (6,4); (4,8); (8,4); (5,7); (7,5); (6,8); (8,6);
-Assimétrica: F
-Transitiva: V
-Relação de equivalência: V
-Relação de ordem parcial: F
-Fecho transitivo da relação: (3,3); (3,5); (3,7); (4,4); (4,6); (4,8); (5,3); (5,5); (5,7); (6,4); (6,6); (6,8); (7,3); (7,5); (7,7); (8,4); (8,6); (8,8);
-
-  */
-
-  is_reflexiva( matriz, n );
+  int reflexiva = is_reflexiva( matriz, n );
+  int irreflexiva = is_irreflexiva( matriz, n );
+  int simetrica = is_simetrica( matriz, n );
+  int antisimetrica = is_antisimetrica( matriz, n );
+  int assimetrica = is_assimetrica( matriz, n );
+  int transitiva = is_transitiva( matriz, n );
+  printf( "Relacao de equivalencia: %s \n", ( reflexiva && simetrica && transitiva ) ? "V" : "F" );
+  printf( "Relacao de ordem parcial: %s \n", ( reflexiva && transitiva && !antisimetrica ) ? "V" : "F" );
+  relacao_de_fecho( matriz, n );
 
   // liberar memoria da matriz
   free (matriz);
 
   return 0;
+
 }
 
 
+/*¨**********************
+Implementacoes de funcoes
+________________________*/
 
-/*************************
- implementacoes de funcoes
-*************************/
-void is_reflexiva( int** matriz, int size ) {
+
+/************************/
+/*** RELACAO DE FECHO ***/
+void relacao_de_fecho( int** matriz, int size ) {
+  printf( "Fecho transitivo da relacao: " );
+  for( int i=1; i<=size; i++ ) {
+    for( int j=1; j<=size; j++ ) {
+      if( matriz[j][i] ) {
+        if( i>=j ) {
+          for( int k=1; k<=size; k++ ) {
+            if( matriz[i][k] ) {
+              printf( "(%d,%d); ", matriz[i][0], matriz[0][k] );
+            }
+          }
+        }
+      }
+    }
+  }
+  printf( "\n" );
+  return;
+}
+/*** RELACAO DE FECHO ***/
+/************************/
+
+/******************/
+/*** TRANSITIVA ***/
+int is_transitiva( int** matriz, int size ) {
+  int is_it = 1;
+  for( int i=1; i<=size; i++ ) {
+    for( int j=1; j<=size; j++ ) {
+      //  printf(" Oiando [%d,%d]: %d ", i, j, matriz[i][j] );
+      if( matriz[i][j] && i != j ) {
+        for( int k=1; k<=size; k++ ) {
+          if( matriz[j][k] && !matriz[i][k] ) {
+            is_it = 0;
+          }
+        }
+      }
+    }
+  }
+  printf( "Transitiva: %s \n", ( is_it == 1 ) ? "V" : "F" );
+  if( is_it == 0 ) {
+    for( int i = 1; i<=size; i++ ) {
+      for( int j = 1; j<=size; j++ ) {
+        //  printf(" Oiando [%d,%d]: %d ", i, j, matriz[i][j] );
+        if( matriz[i][j] && i != j ) {
+          for( int k=1; k<=size; k++ ) {
+            if( matriz[j][k] && !matriz[i][k] ) {
+              printf( "(%d,%d); ", matriz[i][0], matriz[0][k] );
+            }
+          }
+        }
+      }
+    }
+    printf( "\n" );
+  }
+  return is_it;
+}
+/*** TRANSITIVA ***/
+/******************/
+
+/*******************/
+/*** ASSIMÉTRICA ***/
+int is_assimetrica( int** matriz, int size ) {
+  int is_it = 1;
+  for( int i = 1; i<=size; i++ ) {
+    for( int j = 1; j<=size; j++ ) {
+      //  printf(" Oiando [%d,%d]: %d ", i, j, matriz[i][j] );
+      if( matriz[i][j] && matriz[j][i] ) {
+        is_it = 0;
+      }
+    }
+  }
+  printf( "Assimetrica: %s \n", ( is_it == 1 ) ? "V" : "F" );
+  return is_it;
+}
+/*** ASSIMÉTRICA ***/
+/*******************/
+
+/**********************/
+/*** ANTI-SIMÉTRICA ***/
+int is_antisimetrica( int** matriz, int size ) {
+  int is_it = 0;
+  for( int i = 1; i<=size; i++ ) {
+    for( int j = 1; j<=size; j++ ) {
+      //  printf(" Oiando [%d,%d]: %d ", i, j, matriz[i][j] );
+      if( ( matriz[i][j] && matriz[j][i] ) && i != j ) {
+        is_it = 1;
+      }
+    }
+  }
+  printf( "Anti-simetrica: %s \n", ( is_it == 1 ) ? "F" : "V" );
+  if( is_it == 1 ) {
+    for( int i = 1; i<=size; i++ ) {
+      for( int j = 1; j<=size; j++ ) {
+        //  printf(" Oiando [%d,%d]: %d ", i, j, matriz[i][j] );
+        if( i<j ) {
+          if( ( matriz[i][j] && matriz[j][i] ) && i != j ) {
+              printf( "(%d,%d); ", matriz[i][0], matriz[0][j] );
+              printf( "(%d,%d); ", matriz[0][j], matriz[i][0] );
+          }
+        }
+      }
+    }
+    printf( "\n" );
+  }
+  return is_it;
+}
+/*** ANTI-SIMÉTRICA ***/
+/**********************/
+
+
+/*****************/
+/*** SIMÉTRICA ***/
+int is_simetrica( int** matriz, int size ) {
+  int is_it = 1;
+  for( int i=1; i<=size; i++ ) {
+    for( int j=1; j<=size; j++ ) {
+      if( matriz[i][j] && !matriz[j][i] ) {
+        is_it = 0;
+      }
+    }
+  }
+  printf( "Simetrica: %s \n", ( is_it == 1 ) ? "V" : "F" );
+  if( is_it == 0 ) {
+    for( int i=1; i<=size; i++ ) {
+      for( int j=1; j<=size; j++ ) {
+        if( matriz[i][j] && !matriz[j][i] ) {
+          printf( "(%d,%d); ", matriz[0][j], matriz[i][0] );
+        }
+      }
+    }
+    printf( "\n" );
+  }
+  return is_it;
+}
+/*** SIMÉTRICA ***/
+/*****************/
+
+
+/*******************/
+/*** IRREFLEXIVA ***/
+int is_irreflexiva( int** matriz, int size ) {
+  int is_it = 0;
+  for( int i = 1; i<=size; i++ ) {
+    for( int j = 1; j<=size; j++ ) {
+      //  printf(" Oiando [%d,%d]: %d ", i, j, matriz[i][j] );
+       if( i == j ) {
+         if( matriz[i][j] == 1 ) {
+           is_it = 1;
+         }
+       }
+    }
+  }
+  printf( "Irreflexiva: %s \n", ( is_it == 1 ) ? "F" : "V" );
+  if( is_it == 1 ) {
+    for( int i = 1; i<=size; i++ ) {
+      for( int j = 1; j<=size; j++ ) {
+        //  printf(" Oiando [%d,%d]: %d ", i, j, matriz[i][j] );
+        if( i == j ) {
+          if( matriz[i][j] == 1 ) {
+            printf( "(%d,%d); ", matriz[i][0], matriz[0][j] );
+          }
+        }
+      }
+    }
+    printf( "\n" );
+  }
+  return is_it;
+}
+/*******************/
+/*** IRREFLEXIVA ***/
+
+
+/*****************/
+/*** REFLEXIVA ***/
+int is_reflexiva( int** matriz, int size ) {
   int is_it = 1;
   for( int i = 1; i<=size; i++ ) {
     for( int j = 1; j<=size; j++ ) {
@@ -150,7 +291,7 @@ void is_reflexiva( int** matriz, int size ) {
        }
     }
   }
-  printf( "Reflexiva: %s \n", ( is_it == 0 ) ? "F" : "T" );
+  printf( "Reflexiva: %s \n", ( is_it == 0 ) ? "F" : "V" );
   if( is_it == 0 ) {
     for( int i = 1; i<=size; i++ ) {
       for( int j = 1; j<=size; j++ ) {
@@ -164,7 +305,9 @@ void is_reflexiva( int** matriz, int size ) {
     }
     printf( "\n" );
   }
-  return;
+  return is_it;
 }
+/*** REFLEXIVA ***/
+/*****************/
 
 
