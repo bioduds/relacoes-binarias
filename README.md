@@ -2,5 +2,12 @@
 
 ## Matemática Discreta - UFMG
 
-* **Professor: Antonio Loureiro**
-* **Aluno: Eduardo Capanema**
+## Autor
+
+* **Eduardo Capanema** 
+* Matrícula: 2020041515
+* Email: eduardocapanema@ufmg.br
+
+---
+Outubro de 2020
+Matemática Computacional
