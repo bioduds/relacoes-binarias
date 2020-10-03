@@ -1,3 +1,15 @@
 Como executar este programa
 
-...
+Faca a clonagem do repositorio [use branch master] ou descompacte o zip do projeto
+
+git clone https://github.com/bioduds/relacoes-binarias.git 
+
+Dentro do diretorio onde esta o arquivo main.c, compile o codigo usando
+
+gcc main.c -o relacoes
+
+Execute o codigo usando parametros de entrada, e.g.
+
+./relacoes < ./exemplos/ex6.txt
+
+Verifique a saida no terminal
